@@ -15,7 +15,7 @@ def get_chatbot_response(user_message):
     if not configure_gemini():
         return "Error: API Key de Gemini no configurada."
 
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-2.0-flash')
     
     # Context building
     context = "Eres un asistente virtual para un sistema de inventario. "
