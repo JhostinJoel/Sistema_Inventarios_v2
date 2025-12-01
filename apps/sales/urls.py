@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     ClientListView, ClientCreateView, ClientUpdateView, ClientDeleteView,
     SupplierListView, SupplierCreateView, SupplierUpdateView, SupplierDeleteView,
-    SaleListView, POSView, ProcessSaleView
+    SaleListView, SaleDetailView, POSView, ProcessSaleView, ReportView
 )
 
 app_name = 'sales'
@@ -22,6 +22,8 @@ urlpatterns = [
 
     # Sales
     path('sales/', SaleListView.as_view(), name='sale_list'),
+    path('sales/<int:pk>/', SaleDetailView.as_view(), name='sale_detail'),
+    path('reports/', ReportView.as_view(), name='sales_report'),
     path('pos/', POSView.as_view(), name='pos'),
     path('pos/process/', ProcessSaleView.as_view(), name='process_sale'),
 ]

@@ -86,93 +86,82 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
         }
-
-        .card-dashboard:hover {
-            transform: translateY(-5px);
-        }
     </style>
-    {% block extra_css %}{% endblock %}
 </head>
 
 <body>
-
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="brand">
-            <i class="fas fa-boxes"></i> Inventario
+            <i class="fas fa-box-open me-2"></i>Inventario
         </div>
-
         <a href="{% url 'dashboard:index' %}"
             class="{% if request.resolver_match.app_name == 'dashboard' %}active{% endif %}">
-            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+            <i class="fas fa-home me-2"></i>Dashboard
+        </a>
+        <a href="{% url 'inventory:product_list' %}"
+            class="{% if request.resolver_match.app_name == 'inventory' %}active{% endif %}">
+            <i class="fas fa-boxes me-2"></i>Inventario
+        </a>
+        <a href="{% url 'sales:pos' %}"
+            class="{% if request.resolver_match.app_name == 'sales' and 'pos' in request.path %}active{% endif %}">
+            <i class="fas fa-cash-register me-2"></i>Punto de Venta
+        </a>
+        <a href="{% url 'sales:sale_list' %}"
+            class="{% if request.resolver_match.app_name == 'sales' and 'pos' not in request.path and 'reports' not in request.path %}active{% endif %}">
+            <i class="fas fa-shopping-cart me-2"></i>Ventas
+        </a>
+        <a href="{% url 'sales:sales_report' %}" class="{% if 'reports' in request.path %}active{% endif %}">
+            <i class="fas fa-chart-line me-2"></i>Reportes
+        </a>
+        <a href="{% url 'users:user_list' %}"
+            class="{% if request.resolver_match.app_name == 'users' %}active{% endif %}">
+            <i class="fas fa-users me-2"></i>Usuarios
         </a>
 
-        <div class="sidebar-heading text-muted small px-3 mt-3 mb-1">INVENTARIO</div>
-        <a href="{% url 'inventory:product_list' %}" class="{% if 'products' in request.path %}active{% endif %}">
-            <i class="fas fa-box-open me-2"></i> Productos
-        </a>
-        <a href="{% url 'inventory:category_list' %}" class="{% if 'categories' in request.path %}active{% endif %}">
-            <i class="fas fa-tags me-2"></i> Categorías
-        </a>
-        <a href="{% url 'inventory:warehouse_list' %}" class="{% if 'warehouses' in request.path %}active{% endif %}">
-            <i class="fas fa-warehouse me-2"></i> Almacenes
-        </a>
-
-        <div class="sidebar-heading text-muted small px-3 mt-3 mb-1">VENTAS</div>
-        <a href="{% url 'sales:pos' %}" class="{% if 'pos' in request.path %}active{% endif %}">
-            <i class="fas fa-cash-register me-2"></i> Punto de Venta
-        </a>
-        <a href="{% url 'sales:sale_list' %}" class="{% if 'sales/sales' in request.path %}active{% endif %}">
-            <i class="fas fa-file-invoice-dollar me-2"></i> Historial
-        </a>
-        <a href="{% url 'sales:client_list' %}" class="{% if 'clients' in request.path %}active{% endif %}">
-            <i class="fas fa-users me-2"></i> Clientes
-        </a>
-
-        <div class="sidebar-heading text-muted small px-3 mt-3 mb-1">SISTEMA</div>
-        <a href="{% url 'users:profile' %}" class="{% if 'profile' in request.path %}active{% endif %}">
-            <i class="fas fa-user me-2"></i> Mi Perfil
-        </a>
-
-        {% if request.user.role == 'ADMIN' %}
-        <a href="{% url 'users:user_list' %}" class="{% if 'manage' in request.path %}active{% endif %}">
-            <i class="fas fa-users-cog me-2"></i> Usuarios
-        </a>
-        <a href="{% url 'users:audit_log' %}" class="{% if 'audit' in request.path %}active{% endif %}">
-            <i class="fas fa-history me-2"></i> Auditoría
-        </a>
-        {% endif %}
-
-        <hr class="text-white">
-        <a href="{% url 'users:logout' %}">
-            <i class="fas fa-sign-out-alt me-2"></i> Salir
-        </a>
+        <div class="mt-auto pt-4 border-top border-secondary">
+            <a href="{% url 'users:profile' %}">
+                <i class="fas fa-user-circle me-2"></i>Mi Perfil
+            </a>
+            <form action="{% url 'users:logout' %}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link text-decoration-none w-100 text-start"
+                    style="color: #adb5bd; padding: 12px 25px;">
+                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                </button>
+            </form>
+        </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content" id="content">
+    <div class="main-content" id="main-content">
         <!-- Navbar for mobile toggle -->
-        <nav class="navbar navbar-light bg-light mb-4 d-md-none">
+        <nav class="navbar navbar-light bg-light d-md-none mb-3 rounded">
             <div class="container-fluid">
-                <button class="btn btn-dark" id="sidebarToggle">
+                <button class="btn btn-outline-secondary" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
                 </button>
+                <span class="navbar-brand mb-0 h1">Sistema de Inventario</span>
             </div>
         </nav>
 
-        <div class="container-fluid">
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
-            {% endif %}
+        {% if messages %}
+        {% for message in messages %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    text: "{{ message }}",
+                    icon: "{% if message.tags == 'error' %}error{% else %}{{ message.tags }}{% endif %}",
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            });
+        </script>
+        {% endfor %}
+        {% endif %}
 
-            {% block content %}
-            {% endblock %}
-        </div>
+        {% block content %}
+        {% endblock %}
     </div>
 
     <!-- Chat Widget -->
@@ -180,6 +169,7 @@
         <button id="chat-toggle" class="btn btn-primary rounded-circle shadow-lg" style="width: 60px; height: 60px;">
             <i class="fas fa-comment-dots fa-lg"></i>
         </button>
+
         <div id="chat-box" class="card shadow-lg d-none"
             style="position: absolute; bottom: 70px; right: 0; width: 350px; height: 400px;">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
@@ -192,7 +182,9 @@
             <div class="card-footer p-2">
                 <div class="input-group">
                     <input type="text" id="chat-input" class="form-control" placeholder="Escribe tu mensaje...">
-                    <button class="btn btn-primary" id="chat-send"><i class="fas fa-paper-plane"></i></button>
+                    <button class="btn btn-primary" id="chat-send">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -200,6 +192,9 @@
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         document.getElementById('sidebarToggle').addEventListener('click', function () {
             document.getElementById('sidebar').classList.toggle('active');
@@ -241,6 +236,7 @@
                     },
                     body: JSON.stringify({ message: text })
                 });
+
                 const data = await response.json();
                 appendMessage(data.response || data.error, 'bot');
             } catch (error) {
@@ -253,6 +249,7 @@
             if (e.key === 'Enter') sendMessage();
         });
     </script>
+
     {% block extra_js %}{% endblock %}
 </body>
 

@@ -4,6 +4,7 @@ from .views import (
     UserListView, UserCreateView, UserUpdateView, UserDeleteView,
     ProfileView, ProfileUpdateView, AuditLogView
 )
+from django.contrib.auth import views as auth_views
 
 app_name = 'users'
 
@@ -24,4 +25,10 @@ urlpatterns = [
     
     # Audit Log (Admin only)
     path('audit-log/', AuditLogView.as_view(), name='audit_log'),
+
+    # Password Reset
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]

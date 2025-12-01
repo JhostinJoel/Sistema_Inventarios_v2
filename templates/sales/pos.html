@@ -56,9 +56,21 @@
                             data-id="{{ product.id }}">
                             <div class="card product-card"
                                 onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.price }}, {{ product.stock }})">
-                                <div class="card-body position-relative">
+                                <div class="card-body position-relative text-center">
                                     <span class="badge bg-info stock-badge">Stock: {{ product.stock }}</span>
-                                    <h6 class="card-title">{{ product.name }}</h6>
+
+                                    {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid mb-2"
+                                        style="height: 100px; object-fit: contain;">
+                                    {% else %}
+                                    <div class="mb-2 d-flex align-items-center justify-content-center bg-light rounded"
+                                        style="height: 100px;">
+                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                    </div>
+                                    {% endif %}
+
+                                    <h6 class="card-title text-truncate" title="{{ product.name }}">
+                                        {{ product.name }}</h6>
                                     <p class="text-muted small mb-1">{{ product.category.name }}</p>
                                     <p class="h5 text-success mb-0">${{ product.price }}</p>
                                 </div>
@@ -140,7 +152,15 @@
             if (existingItem.quantity < maxStock) {
                 existingItem.quantity++;
             } else {
-                alert('No hay más stock disponible de este producto');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Stock Máximo',
+                    text: 'No hay más stock disponible de este producto',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
                 return;
             }
         } else {
@@ -169,7 +189,15 @@
             item.quantity = newQuantity;
             renderCart();
         } else if (newQuantity > item.max_stock) {
-            alert('No hay suficiente stock');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Stock Insuficiente',
+                text: 'No puedes agregar más unidades de las disponibles',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000
+            });
         }
     }
 
@@ -216,21 +244,42 @@
     }
 
     function clearCart() {
-        if (cart.length > 0 && confirm('¿Deseas limpiar el carrito?')) {
-            cart = [];
-            renderCart();
+        if (cart.length > 0) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Se eliminarán todos los productos del carrito",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, limpiar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    cart = [];
+                    renderCart();
+                    Swal.fire(
+                        '¡Limpio!',
+                        'El carrito ha sido vaciado.',
+                        'success'
+                    )
+                }
+            })
         }
     }
 
     async function processSale() {
         if (cart.length === 0) {
-            alert('El carrito está vacío');
+            Swal.fire('Carrito Vacío', 'Agrega productos antes de procesar la venta', 'warning');
             return;
         }
 
         const clientId = document.getElementById('clientSelect').value;
         const btnPay = document.getElementById('btnPay');
+
+        // Disable button and show loading
         btnPay.disabled = true;
+        const originalText = btnPay.innerHTML;
         btnPay.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Procesando...';
 
         try {
@@ -249,7 +298,14 @@
             const data = await response.json();
 
             if (data.success) {
-                alert(data.message);
+                await Swal.fire({
+                    title: '¡Venta Exitosa!',
+                    text: data.message,
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
                 cart = [];
                 renderCart();
                 document.getElementById('clientSelect').value = '';
@@ -257,13 +313,16 @@
                 // Reload page to update stock
                 setTimeout(() => location.reload(), 1000);
             } else {
-                alert('Error: ' + data.error);
+                Swal.fire('Error', data.error, 'error');
+                // Re-enable button on error
+                btnPay.disabled = false;
+                btnPay.innerHTML = originalText;
             }
         } catch (error) {
-            alert('Error de conexión: ' + error);
-        } finally {
+            Swal.fire('Error de Conexión', 'No se pudo procesar la venta', 'error');
+            // Re-enable button on error
             btnPay.disabled = false;
-            btnPay.innerHTML = '<i class="fas fa-check me-2"></i>Procesar Venta';
+            btnPay.innerHTML = originalText;
         }
     }
 </script>

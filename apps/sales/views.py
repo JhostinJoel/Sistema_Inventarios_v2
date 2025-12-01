@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -64,6 +64,16 @@ class SaleListView(LoginRequiredMixin, ListView):
     template_name = 'sales/sale_list.html'
     context_object_name = 'sales'
     ordering = ['-date']
+
+class SaleDetailView(LoginRequiredMixin, DetailView):
+    model = Sale
+    template_name = 'sales/sale_detail.html'
+    context_object_name = 'sale'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sale_details'] = self.object.details.all()
+        return context
 
 class POSView(LoginRequiredMixin, TemplateView):
     template_name = 'sales/pos.html'
@@ -137,4 +147,25 @@ class ProcessSaleView(LoginRequiredMixin, TemplateView):
         except ValueError as e:
             return JsonResponse({'success': False, 'error': str(e)})
         except Exception as e:
-            return JsonResponse({'success': False, 'error': f'Error al procesar la venta: {str(e)}'})
+            return JsonResponse({'success': False, 'error': f'Error al procesar la venta: {str(e)}'}, status=400)
+
+class ReportView(LoginRequiredMixin, TemplateView):
+    template_name = 'sales/report.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        
+        sales = Sale.objects.all().order_by('-date')
+        
+        if start_date and end_date:
+            sales = sales.filter(date__date__range=[start_date, end_date])
+            
+        context['sales'] = sales
+        context['start_date'] = start_date
+        context['end_date'] = end_date
+        context['total_sales_count'] = sales.count()
+        context['total_income'] = sum(sale.total for sale in sales)
+        
+        return context
