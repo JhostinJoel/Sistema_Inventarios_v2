@@ -517,6 +517,37 @@ python manage.py collectstatic
 - **PythonAnywhere** - Especializado en Django
 - **DigitalOcean** - Más control, requiere configuración
 - **AWS/Azure** - Escalable, profesional
+- **Render** - ⭐ Recomendado, fácil y gratis
+
+### Despliegue en Render (Recomendado)
+
+Este proyecto está optimizado para desplegarse en [Render.com](https://render.com) con PostgreSQL.
+
+**📖 Guía completa de despliegue**: Ver [DEPLOY.md](DEPLOY.md)
+
+**Resumen rápido:**
+
+1. El proyecto ya incluye los archivos necesarios:
+   - `build.sh` - Script de construcción
+   - `requirements.txt` - Con dependencias de producción (gunicorn, psycopg2, whitenoise)
+   - `settings.py` - Configurado para PostgreSQL con `dj-database-url`
+
+2. Crea una base de datos PostgreSQL en Render
+
+3. Crea un Web Service conectado a tu repositorio GitHub
+
+4. Configura las variables de entorno:
+   ```
+   DATABASE_URL=postgresql://...
+   SECRET_KEY=tu-clave-secreta
+   DEBUG=False
+   PYTHON_VERSION=3.11.9
+   ```
+
+5. ¡Listo! Render desplegará automáticamente tu aplicación
+
+**🔗 Demo en vivo**: [https://sistema-de-inventarios.onrender.com](https://sistema-de-inventarios-h50e.onrender.com) *(actualiza con tu URL)*
+
 
 ## 📄 Licencia
 
