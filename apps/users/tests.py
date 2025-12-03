@@ -43,7 +43,7 @@ class UserTests(TestCase):
     def test_seller_denied_user_list(self):
         self.client.force_login(self.seller_user)
         response = self.client.get(reverse('users:user_list'))
-        self.assertEqual(response.status_code, 403)
+        self.assertRedirects(response, reverse('dashboard:index'))
 
     def test_profile_update(self):
         self.client.force_login(self.admin_user)

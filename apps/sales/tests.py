@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from apps.sales.models import Client as SalesClient, Sale, SaleDetail
+from apps.sales.models import Client as SalesClient, Sale, SaleDetail, Supplier
 from apps.inventory.models import Product, Category
 import json
 
@@ -76,3 +76,53 @@ class SalesTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.json()['success'])
         self.assertIn('Stock insuficiente', response.json()['error'])
+
+class SupplierTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='admin', password='password123', role='ADMIN')
+        self.client = Client()
+        self.client.force_login(self.user)
+        self.supplier = Supplier.objects.create(
+            name='Test Supplier',
+            contact_name='Contact',
+            email='supplier@test.com',
+            phone='1234567890'
+        )
+
+    def test_supplier_list(self):
+        response = self.client.get(reverse('sales:supplier_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Test Supplier')
+
+    def test_supplier_create(self):
+        url = reverse('sales:supplier_add')
+        data = {
+            'name': 'New Supplier',
+            'contact_name': 'New Contact',
+            'email': 'new@test.com',
+            'phone': '0987654321',
+            'address': 'New Address'
+        }
+        response = self.client.post(url, data)
+        self.assertRedirects(response, reverse('sales:supplier_list'))
+        self.assertTrue(Supplier.objects.filter(name='New Supplier').exists())
+
+    def test_supplier_update(self):
+        url = reverse('sales:supplier_edit', args=[self.supplier.id])
+        data = {
+            'name': 'Updated Supplier',
+            'contact_name': 'Contact',
+            'email': 'supplier@test.com',
+            'phone': '1234567890',
+            'address': 'Address'
+        }
+        response = self.client.post(url, data)
+        self.assertRedirects(response, reverse('sales:supplier_list'))
+        self.supplier.refresh_from_db()
+        self.assertEqual(self.supplier.name, 'Updated Supplier')
+
+    def test_supplier_delete(self):
+        url = reverse('sales:supplier_delete', args=[self.supplier.id])
+        response = self.client.post(url)
+        self.assertRedirects(response, reverse('sales:supplier_list'))
+        self.assertFalse(Supplier.objects.filter(id=self.supplier.id).exists())

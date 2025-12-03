@@ -31,6 +31,7 @@ class CustomLoginView(LoginView):
         return super().form_invalid(form)
 
 class CustomLogoutView(LogoutView):
+    http_method_names = ['get', 'post', 'options']
     next_page = 'users:login'
     
     def dispatch(self, request, *args, **kwargs):
@@ -42,6 +43,9 @@ class CustomLogoutView(LogoutView):
                 request=request
             )
         return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 # User Management Views (Admin only)
 class UserListView(LoginRequiredMixin, AdminRequiredMixin, ListView):

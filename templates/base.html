@@ -98,32 +98,83 @@
             class="{% if request.resolver_match.app_name == 'dashboard' %}active{% endif %}">
             <i class="fas fa-home me-2"></i>Dashboard
         </a>
+
+        <div class="sidebar-heading mt-3 px-3 mb-1">Inventario</div>
         <a href="{% url 'inventory:product_list' %}"
-            class="{% if request.resolver_match.app_name == 'inventory' %}active{% endif %}">
-            <i class="fas fa-boxes me-2"></i>Inventario
+            class="{% if request.resolver_match.url_name == 'product_list' %}active{% endif %}">
+            <i class="fas fa-boxes me-2"></i>Productos
         </a>
-        <a href="{% url 'sales:pos' %}"
-            class="{% if request.resolver_match.app_name == 'sales' and 'pos' in request.path %}active{% endif %}">
+        <a href="{% url 'inventory:category_list' %}"
+            class="{% if request.resolver_match.url_name == 'category_list' %}active{% endif %}">
+            <i class="fas fa-tags me-2"></i>Categorías
+        </a>
+        <a href="{% url 'inventory:warehouse_list' %}"
+            class="{% if request.resolver_match.url_name == 'warehouse_list' %}active{% endif %}">
+            <i class="fas fa-warehouse me-2"></i>Almacenes
+        </a>
+
+        <div class="sidebar-heading mt-3 px-3 mb-1">Ventas</div>
+        <a href="{% url 'sales:pos' %}" class="{% if request.resolver_match.url_name == 'pos' %}active{% endif %}">
             <i class="fas fa-cash-register me-2"></i>Punto de Venta
         </a>
         <a href="{% url 'sales:sale_list' %}"
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link text-decoration-none w-100 text-start"
-                    style="color: #adb5bd; padding: 12px 25px;">
-                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                </button>
-            </form>
+            class="{% if request.resolver_match.url_name == 'sale_list' %}active{% endif %}">
+            <i class="fas fa-shopping-cart me-2"></i>Ventas
+        </a>
+        <a href="{% url 'sales:client_list' %}"
+            class="{% if request.resolver_match.url_name == 'client_list' %}active{% endif %}">
+            <i class="fas fa-users me-2"></i>Clientes
+        </a>
+        <a href="{% url 'sales:supplier_list' %}"
+            class="{% if request.resolver_match.url_name == 'supplier_list' %}active{% endif %}">
+            <i class="fas fa-truck me-2"></i>Proveedores
+        </a>
+        <a href="{% url 'sales:sales_report' %}"
+            class="{% if request.resolver_match.url_name == 'sales_report' %}active{% endif %}">
+            <i class="fas fa-chart-line me-2"></i>Reportes
+        </a>
+
+        {% if user.is_superuser %}
+        <div class="sidebar-heading mt-3 px-3 mb-1">Administración</div>
+        <a href="{% url 'users:user_list' %}"
+            class="{% if request.resolver_match.url_name == 'user_list' %}active{% endif %}">
+            <i class="fas fa-user-cog me-2"></i>Usuarios
+        </a>
+        <a href="{% url 'users:audit_log' %}"
+            class="{% if request.resolver_match.url_name == 'audit_log' %}active{% endif %}">
+            <i class="fas fa-history me-2"></i>Auditoría
+        </a>
+        {% endif %}
+
+        <div class="mt-auto p-3">
+            <a href="{% url 'users:logout' %}" class="text-danger">
+                <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+            </a>
         </div>
     </div>
 
-    <div class="main-content" id="main-content">
-        <!-- Navbar for mobile toggle -->
-        <nav class="navbar navbar-light bg-light d-md-none mb-3 rounded">
+    <div class="main-content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4 shadow-sm rounded">
             <div class="container-fluid">
-                <button class="btn btn-outline-secondary" id="sidebarToggle">
+                <button class="btn btn-outline-secondary me-3" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
                 </button>
                 <span class="navbar-brand mb-0 h1">Sistema de Inventario</span>
+
+                <div class="ms-auto d-flex align-items-center">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle fa-lg me-1"></i> {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'users:profile' %}">Perfil</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'users:logout' %}">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </nav>
 
