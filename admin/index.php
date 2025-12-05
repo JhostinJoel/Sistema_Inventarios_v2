@@ -119,28 +119,33 @@ foreach ($products as $p) {
 
     <style>
         /* Admin Specific Overrides */
-        /* Light Theme for Admin */
+        
+        /* IMPROVED Light Theme for Admin */
         [data-theme="light"] body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e6e9f0 100%);
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
             color: #2d3748;
         }
 
         [data-theme="light"] .glass-card {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             color: #2d3748;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         [data-theme="light"] .glass-card:hover {
             background: rgba(255, 255, 255, 1);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
         }
 
         [data-theme="light"] .table-glass {
             color: #2d3748;
         }
 
-        [data-theme="light"] .table-glass th {
-            color: #1a202c;
+        [data-theme="light"] .table-glass th,
+        [data-theme="light"] .table-glass td {
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #2d3748;
         }
 
         [data-theme="light"] h1,
@@ -148,6 +153,24 @@ foreach ($products as $p) {
         [data-theme="light"] h3,
         [data-theme="light"] h4,
         [data-theme="light"] h5 {
+            color: #1a202c !important;
+        }
+
+        [data-theme="light"] .nav-pills .nav-link {
+            color: #4a5568;
+        }
+
+        [data-theme="light"] .nav-pills .nav-link.active {
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            color: white;
+        }
+
+        [data-theme="light"] .nav-pills .nav-link:hover:not(.active) {
+            background: rgba(0, 0, 0, 0.05);
+            color: #2d3748;
+        }
+
+        [data-theme="light"] .text-white {
             color: #2d3748 !important;
         }
 
@@ -163,24 +186,29 @@ foreach ($products as $p) {
             color: #fff !important;
         }
 
+        /* Ensure buttons stay colorful */
         [data-theme="light"] .btn-success {
-            background: #38a169;
-            border-color: #38a169;
+            background: #48bb78;
+            border-color: #48bb78;
+            color: white;
         }
 
         [data-theme="light"] .btn-danger {
-            background: #e53e3e;
-            border-color: #e53e3e;
+            background: #f56565;
+            border-color: #f56565;
+            color: white;
         }
 
         [data-theme="light"] .btn-primary {
-            background: #3182ce;
-            border-color: #3182ce;
+            background: #4299e1;
+            border-color: #4299e1;
+            color: white;
         }
 
         [data-theme="light"] .btn-info {
             background: #0bc5ea;
             border-color: #0bc5ea;
+            color: white;
         }
 
         /* Theme Toggle in Admin */
