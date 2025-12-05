@@ -1,9 +1,9 @@
-# 🏪 Sistema de Inventario Inteligente
+# 🏪 Matia's Store - Sistema de Inventario y Tienda Online
 
-Sistema completo de gestión de inventario con punto de venta, reportes y chatbot con IA desarrollado en Django.
+Sistema completo de gestión de inventario con tienda online, panel de administración y procesamiento de pedidos vía WhatsApp, desarrollado en PHP puro con MySQL.
 
-![Python](https://img.shields.io/badge/Python-3.12-blue)
-![Django](https://img.shields.io/badge/Django-5.2-green)
+![PHP](https://img.shields.io/badge/PHP-8.0+-blue)
+![MySQL](https://img.shields.io/badge/MySQL-8.0+-orange)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
@@ -12,570 +12,570 @@ Sistema completo de gestión de inventario con punto de venta, reportes y chatbo
 - [Características](#características)
 - [Tecnologías](#tecnologías)
 - [Requisitos Previos](#requisitos-previos)
-- [Instalación Paso a Paso](#instalación-paso-a-paso)
-- [Configuración de la Base de Datos](#configuración-de-la-base-de-datos)
-- [Configuración del Chatbot IA](#configuración-del-chatbot-ia)
+- [Instalación](#instalación)
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Módulos del Sistema](#módulos-del-sistema)
-- [Usuarios y Roles](#usuarios-y-roles)
-- [API y Endpoints](#api-y-endpoints)
+- [Pruebas Unitarias](#pruebas-unitarias)
+- [Uso del Sistema](#uso-del-sistema)
+- [API Endpoints](#api-endpoints)
 - [Troubleshooting](#troubleshooting)
 
 ## ✨ Características
 
-### Gestión de Inventario
-- ✅ CRUD completo de productos
-- ✅ Categorías y almacenes
-- ✅ Control de stock en tiempo real
-- ✅ Alertas de stock bajo
-- ✅ Movimientos de inventario (entradas/salidas)
+### 🛒 Tienda Online (Frontend Público)
+- ✅ Diseño moderno con **Glassmorphism** y tema oscuro
+- ✅ Efectos 3D en tarjetas de productos (Vanilla Tilt.js)
+- ✅ Animaciones fluidas (Animate.css)
+- ✅ Carrito de compras persistente (LocalStorage)
+- ✅ Filtrado de productos por categorías
+- ✅ Checkout con formulario de datos del cliente
+- ✅ Integración con WhatsApp para confirmación de pedidos
+- ✅ **Totalmente responsive** (móvil, tablet, desktop)
 
-### Punto de Venta (POS)
-- ✅ Interfaz moderna e intuitiva
-- ✅ Carrito de compras interactivo
-- ✅ Registro de ventas
-- ✅ Asociación con clientes
-- ✅ Actualización automática de stock
+### 🎛️ Panel de Administración
+- ✅ CRUD completo de **Productos**
+- ✅ CRUD completo de **Categorías**
+- ✅ Gestión de **Pedidos** con estados (pendiente, completado, cancelado)
+- ✅ Dashboard con estadísticas en tiempo real
+- ✅ **Alertas de stock bajo** (≤ 12 unidades)
+- ✅ **Alertas de productos agotados** (0 unidades)
+- ✅ Interfaz premium con glassmorphism
+- ✅ Modales interactivos (SweetAlert2)
 
-### Reportes
-- ✅ Reportes de ventas por rango de fechas
-- ✅ Cálculo automático de ingresos totales
-- ✅ Visualización detallada de transacciones
-- ✅ Exportación de datos
+### 📦 Gestión de Pedidos
+- ✅ Validación de productos antes de crear pedidos
+- ✅ Detección de productos "fantasma" (eliminados del inventario)
+- ✅ Notificación al cliente sobre confirmación telefónica
+- ✅ Mensaje detallado de WhatsApp con:
+  - Fecha y hora del pedido
+  - Datos del cliente
+  - Lista de productos con precios individuales
+  - Total a pagar
 
-### Chatbot con IA
-- 🤖 Asistente virtual integrado (Google Gemini)
-- 🤖 Consultas sobre inventario y stock
-- 🤖 Información de ventas
-- 🤖 Respuestas contextuales
+### 🔒 Seguridad y Validación
+- ✅ Validación de integridad referencial (Foreign Keys)
+- ✅ Transacciones de base de datos (ACID)
+- ✅ Manejo de errores con rollback automático
+- ✅ Sanitización de datos (htmlspecialchars, prepared statements)
 
-### Gestión de Usuarios
-- 👤 Sistema de autenticación robusto
-- 👤 Roles: Administrador, Vendedor, Almacén
-- 👤 Permisos granulares
-- 👤 Recuperación de contraseña
-
-## 🛠 Tecnologías
+## 🛠️ Tecnologías
 
 ### Backend
-- **Django 5.2** - Framework web principal
-- **Python 3.12** - Lenguaje de programación
-- **SQLite** - Base de datos (configurable a MySQL/PostgreSQL)
-- **Google Generative AI** - Chatbot inteligente
+- **PHP 8.0+** - Lenguaje del servidor
+- **MySQL 8.0+** - Base de datos relacional
+- **PDO** - Capa de abstracción de base de datos
 
 ### Frontend
+- **HTML5** - Estructura
+- **CSS3** - Estilos (Glassmorphism, gradientes, animaciones)
+- **JavaScript (Vanilla)** - Lógica del cliente
 - **Bootstrap 5.3** - Framework CSS
 - **Font Awesome 6.4** - Iconos
-- **SweetAlert2** - Notificaciones elegantes
-- **JavaScript Vanilla** - Interactividad
+- **Animate.css 4.1** - Animaciones CSS
+- **Vanilla Tilt.js 1.8** - Efectos 3D
+- **SweetAlert2** - Alertas modernas
 
-### Utilidades
-- **python-dotenv** - Gestión de variables de entorno
-- **crispy-forms** - Formularios mejorados
+### Herramientas
+- **Git** - Control de versiones
+- **PHP Built-in Server** - Servidor de desarrollo
 
-## 📦 Requisitos Previos
+## 📋 Requisitos Previos
 
-Antes de comenzar, asegúrate de tener instalado:
+- PHP 8.0 o superior
+- MySQL 8.0 o superior
+- Navegador web moderno (Chrome, Firefox, Safari, Edge)
+- Git (opcional)
 
-- **Python 3.10 o superior** - [Descargar](https://www.python.org/downloads/)
-- **Git** - [Descargar](https://git-scm.com/downloads)
-- **pip** - Gestor de paquetes de Python (incluido con Python)
-- **Navegador moderno** - Chrome, Firefox, Edge
+## 🚀 Instalación
 
-## 🚀 Instalación Paso a Paso
-
-### 1️⃣ Clonar el Repositorio
-
-```bash
-# Usando HTTPS
-git clone https://github.com/JhostinJoel/Sistema-de-Inventarios.git
-
-# O usando SSH
-git clone git@github.com:JhostinJoel/Sistema-de-Inventarios.git
-
-# Entrar al directorio del proyecto
-cd Sistema-de-Inventarios
-```
-
-### 2️⃣ Crear Entorno Virtual
+### 1. Clonar el Repositorio
 
 ```bash
-# En Windows
-python -m venv venv
-venv\Scripts\activate
-
-# En macOS/Linux
-python3 -m venv venv
-source venv/bin/activate
+git clone https://github.com/tu-usuario/matias-store.git
+cd matias-store
 ```
 
-> 💡 **Nota**: Deberías ver `(venv)` al inicio de tu línea de comandos
+### 2. Configurar la Base de Datos
 
-### 3️⃣ Instalar Dependencias
+#### Opción A: Usando el instalador automático
+
+1. Navega a `http://localhost:8080/install.php`
+2. Sigue las instrucciones en pantalla
+
+#### Opción B: Configuración manual
+
+1. Crea la base de datos:
+
+```sql
+CREATE DATABASE matias_store CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+2. Importa el esquema:
 
 ```bash
-pip install -r requirements.txt
+mysql -u root -p matias_store < database.sql
 ```
 
-**Paquetes principales que se instalarán:**
-- Django==5.2.8
-- google-generativeai
-- python-dotenv
-- django-crispy-forms
-- crispy-bootstrap5
+3. Configura las credenciales en `config/db.php`:
 
-### 4️⃣ Configurar Variables de Entorno
+```php
+<?php
+$host = 'localhost';
+$dbname = 'matias_store';
+$username = 'root';
+$password = 'tu_contraseña';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Error de conexión: " . $e->getMessage());
+}
+```
+
+### 3. Iniciar el Servidor
+
+#### Para acceso local (solo desde tu PC):
 
 ```bash
-# Copiar el archivo de ejemplo
-cp .env.example .env
-
-# En Windows
-copy .env.example .env
+php -S localhost:8080
 ```
 
-**Editar el archivo `.env` con tus valores:**
+#### Para acceso desde dispositivos móviles en la misma red:
 
 ```bash
-DEBUG=True
-SECRET_KEY=django-insecure-tu-clave-secreta-aqui
-
-# Obtén tu API key en: https://makersuite.google.com/app/apikey
-GEMINI_API_KEY=tu-api-key-de-gemini-aqui
-
-# Configuración de Base de Datos (opcional)
-# DATABASE_ENGINE=django.db.backends.sqlite3
-# DATABASE_NAME=db.sqlite3
+php -S 0.0.0.0:8080
 ```
 
-> ⚠️ **IMPORTANTE**: Nunca compartas tu `SECRET_KEY` ni `GEMINI_API_KEY` públicamente
+Luego accede desde tu móvil usando la IP local:
+```
+http://192.168.x.x:8080
+```
 
-## 🗄 Configuración de la Base de Datos
-
-### Usando SQLite (Por Defecto)
-
-SQLite viene incluido con Python, no requiere instalación adicional.
-
-### Opción 1: Importar Base de Datos Existente
-
-Si tienes el archivo `db.sqlite3` incluido en el repositorio:
-
+Para encontrar tu IP local:
 ```bash
-# La base de datos ya está lista, solo ejecuta las migraciones pendientes
-python manage.py migrate
+# Windows
+ipconfig | findstr "IPv4"
+
+# Linux/Mac
+ifconfig | grep "inet "
 ```
 
-### Opción 2: Crear Base de Datos desde Cero
+### 4. Acceder al Sistema
 
-```bash
-# 1. Aplicar migraciones
-python manage.py migrate
-
-# 2. Crear superusuario (administrador)
-python manage.py createsuperuser
-# Usuario: admin
-# Email: admin@example.com
-# Password: (tu contraseña segura)
-
-# 3. (Opcional) Cargar datos de prueba
-python manage.py loaddata initial_data.json
-```
-
-### Estructura de la Base de Datos
-
-El sistema crea las siguientes tablas principales:
-
-**Módulo Users:**
-- `users_user` - Usuarios del sistema
-- `users_user_groups` - Relación usuarios-grupos
-- `users_user_user_permissions` - Permisos de usuarios
-
-**Módulo Inventory:**
-- `inventory_category` - Categorías de productos
-- `inventory_warehouse` - Almacenes
-- `inventory_product` - Productos
-- `inventory_stockmovement` - Movimientos de inventario
-
-**Módulo Sales:**
-- `sales_client` - Clientes
-- `sales_supplier` - Proveedores
-- `sales_sale` - Ventas
-- `sales_saledetail` - Detalle de ventas
-
-### Migrar a MySQL/PostgreSQL
-
-Si deseas usar MySQL o PostgreSQL en producción:
-
-**Para MySQL:**
-
-```bash
-# Instalar driver
-pip install mysqlclient
-
-# Configurar en .env
-DATABASE_ENGINE=django.db.backends.mysql
-DATABASE_NAME=inventario_db
-DATABASE_USER=tu_usuario
-DATABASE_PASSWORD=tu_password
-DATABASE_HOST=localhost
-DATABASE_PORT=3306
-```
-
-**Para PostgreSQL:**
-
-```bash
-# Instalar driver
-pip install psycopg2
-
-# Configurar en .env
-DATABASE_ENGINE=django.db.backends.postgresql
-DATABASE_NAME=inventario_db
-DATABASE_USER=tu_usuario
-DATABASE_PASSWORD=tu_password
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-```
-
-## 🤖 Configuración del Chatbot IA
-
-### 1. Obtener API Key de Google Gemini
-
-1. Ve a [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Inicia sesión con tu cuenta de Google
-3. Click en "Create API Key"
-4. Copia la clave generada
-
-### 2. Configurar la API Key
-
-```bash
-# Edita tu archivo .env
-GEMINI_API_KEY=AIzaSy... (tu clave aquí)
-```
-
-### 3. Verificar Funcionamiento
-
-1. Inicia el servidor: `python manage.py runserver`
-2. Accede a cualquier página del sistema
-3. Click en el botón azul flotante (esquina inferior derecha)
-4. Escribe: "¿Cuántos productos hay en stock?"
-
-## 🏃‍♂️ Ejecutar el Servidor
-
-```bash
-# Desarrollo (localhost:8000)
-python manage.py runserver
-
-# Accesible desde red local
-python manage.py runserver 0.0.0.0:8000
-```
-
-Abre tu navegador en: **http://127.0.0.1:8000**
+- **Tienda:** `http://localhost:8080/`
+- **Admin:** `http://localhost:8080/admin/`
 
 ## 📁 Estructura del Proyecto
 
 ```
-Sistema-de-Inventarios/
-├── apps/
-│   ├── chatbot/          # Módulo chatbot IA
-│   │   ├── views.py      # API del chatbot
-│   │   └── utils.py      # Lógica de Gemini
-│   ├── dashboard/        # Panel principal
-│   ├── inventory/        # Gestión de inventario
-│   │   ├── models.py     # Productos, categorías, almacenes
-│   │   ├── views.py      # Vistas CRUD
-│   │   └── forms.py      # Formularios
-│   ├── sales/            # Ventas y POS
-│   │   ├── models.py     # Ventas, clientes, proveedores
-│   │   ├── views.py      # POS, reportes
-│   │   └── urls.py       # Rutas
-│   ├── users/            # Autenticación
-│   │   ├── models.py     # Modelo de usuario personalizado
-│   │   ├── permissions.py # Control de acceso
-│   │   └── views.py      # Login, registro, perfil
-│   └── notifications/    # Sistema de notificaciones
+Proyecto1_v2/
+│
+├── admin/
+│   └── index.php              # Panel de administración completo
+│
+├── api/
+│   └── save_order.php         # Endpoint para guardar pedidos
+│
+├── assets/
+│   ├── css/
+│   │   └── style.css          # Estilos personalizados
+│   └── js/
+│       └── app.js             # Lógica del carrito y checkout
+│
 ├── config/
-│   ├── settings.py       # Configuración Django
-│   ├── urls.py           # Rutas principales
-│   └── wsgi.py           # WSGI para producción
-├── templates/
-│   ├── base.html         # Template base
-│   ├── dashboard/        # Templates dashboard
-│   ├── inventory/        # Templates inventario
-│   ├── sales/            # Templates ventas
-│   │   ├── pos.html      # Punto de venta
-│   │   ├── report.html   # Reportes
-│   │   └── sale_detail.html
-│   └── users/            # Templates usuarios
-├── static/               # Archivos estáticos
-├── media/                # Archivos subidos
-├── db.sqlite3            # Base de datos SQLite
-├── .env                  # Variables de entorno (NO subir a Git)
-├── .env.example          # Ejemplo de .env
-├── requirements.txt      # Dependencias Python
-├── manage.py             # CLI de Django
-└── README.md             # Este archivo
+│   └── db.php                 # Configuración de base de datos
+│
+├── tests/
+│   ├── unit_tests.php         # Pruebas unitarias CRUD
+│   └── web_test.php           # Pruebas de integración
+│
+├── index.php                  # Página principal de la tienda
+├── database.sql               # Esquema de base de datos
+├── install.php                # Instalador automático
+└── README.md                  # Este archivo
 ```
 
-## 📚 Módulos del Sistema
+## 🎯 Módulos del Sistema
 
-### 🏠 Dashboard
-- Vista general del sistema
-- Estadísticas en tiempo real
-- Productos con stock bajo
-- Ventas del día
-- Movimientos recientes
+### 1. Tienda Online (`index.php`)
 
-### 📦 Inventario
-- **Productos**: Gestión completa de productos
-- **Categorías**: Organización por categorías
-- **Almacenes**: Múltiples ubicaciones de almacenamiento
-- **Movimientos**: Registro de entradas y salidas
+**Funcionalidades:**
+- Visualización de productos con imágenes
+- Filtrado por categorías
+- Carrito de compras interactivo
+- Checkout con formulario
+- Integración con WhatsApp
 
-### 💰 Ventas
-- **Punto de Venta (POS)**: Interfaz de venta rápida
-- **Registro de Ventas**: Historial completo
-- **Clientes**: Base de datos de clientes
-- **Proveedores**: Gestión de proveedores
-- **Reportes**: Análisis de ventas
+**Características técnicas:**
+- Persistencia del carrito en `localStorage`
+- Validación de formularios
+- Manejo de estados (vacío, con productos)
+- Animaciones y efectos 3D
 
-### 👥 Usuarios
-- **Gestión de Usuarios**: CRUD de usuarios
-- **Roles y Permisos**: Control de acceso granular
-- **Perfil**: Edición de perfil personal
-- **Autenticación**: Login/Logout seguro
+### 2. Panel de Administración (`admin/index.php`)
 
-## 🔐 Usuarios y Roles
+**Secciones:**
 
-### Roles Disponibles
+#### Dashboard
+- Total de productos
+- Total de categorías
+- Total de pedidos
+- Alertas de stock (bajo y agotado)
 
-| Rol | Permisos | Acceso |
-|-----|----------|--------|
-| **Administrador** | Todos los permisos | Dashboard, Inventario, Ventas, Usuarios, Reportes |
-| **Vendedor** | Ventas y consultas | Dashboard, POS, Ver inventario, Ventas |
-| **Almacén** | Gestión de stock | Dashboard, Inventario, Movimientos |
+#### Gestión de Productos
+- **Crear:** Formulario con nombre, descripción, precio, stock, categoría e imagen
+- **Leer:** Tabla con todos los productos y sus detalles
+- **Actualizar:** Modal de edición con datos precargados
+- **Eliminar:** Confirmación con SweetAlert2
 
-### Usuario por Defecto
+#### Gestión de Categorías
+- **Crear:** Formulario con nombre y descripción
+- **Leer:** Tabla con todas las categorías
+- **Actualizar:** Modal de edición
+- **Eliminar:** Confirmación con SweetAlert2
 
-Después de la instalación, puedes usar:
+#### Gestión de Pedidos
+- Visualización de todos los pedidos
+- Cambio de estado (pendiente → completado/cancelado)
+- Detalles de cada pedido (productos, cantidades, total)
 
-```
-Usuario: admin
-Contraseña: password123
-Rol: Administrador
-```
+### 3. API de Pedidos (`api/save_order.php`)
 
-> ⚠️ **IMPORTANTE**: Cambia la contraseña inmediatamente en producción
+**Endpoint:** `POST /api/save_order.php`
 
-## 🌐 API y Endpoints
-
-### Endpoints Principales
-
-```
-# Autenticación
-/users/login/          - Inicio de sesión
-/users/logout/         - Cerrar sesión
-/users/register/       - Registro de usuario
-
-# Dashboard
-/                      - Panel principal
-
-# Inventario
-/inventory/products/              - Lista de productos
-/inventory/products/add/          - Crear producto
-/inventory/products/<id>/edit/    - Editar producto
-/inventory/products/<id>/delete/  - Eliminar producto
-
-# Ventas
-/sales/pos/                       - Punto de venta
-/sales/sales/                     - Lista de ventas
-/sales/sales/<id>/                - Detalle de venta
-/sales/reports/                   - Reportes de ventas
-/sales/clients/                   - Gestión de clientes
-
-# Chatbot
-/chatbot/api/                     - API del chatbot (POST)
+**Request Body:**
+```json
+{
+  "name": "Juan Pérez",
+  "phone": "3001234567",
+  "address": "Calle 123 #45-67",
+  "total": 150000,
+  "items": [
+    {
+      "id": 1,
+      "name": "Producto 1",
+      "price": 50000,
+      "quantity": 2
+    },
+    {
+      "id": 2,
+      "name": "Producto 2",
+      "price": 50000,
+      "quantity": 1
+    }
+  ]
+}
 ```
 
-### Ejemplo de Uso del API del Chatbot
+**Response (Éxito):**
+```json
+{
+  "success": true,
+  "order_id": 123
+}
+```
+
+**Response (Error - Producto no existe):**
+```json
+{
+  "success": false,
+  "message": "Los siguientes productos ya no están disponibles: Mouse Gamer. Por favor elimínalos de tu carrito."
+}
+```
+
+**Validaciones:**
+1. Verifica que todos los productos existan en la base de datos
+2. Si algún producto fue eliminado, devuelve error específico
+3. Usa transacciones para garantizar integridad
+4. Rollback automático en caso de error
+
+## 🧪 Pruebas Unitarias
+
+### Ejecutar las Pruebas
+
+Navega a:
+```
+http://localhost:8080/tests/unit_tests.php
+```
+
+### Tests Implementados
+
+#### Categorías (CRUD Completo)
+1. ✅ **Create:** Insertar nueva categoría
+2. ✅ **Read:** Leer categoría por ID
+3. ✅ **Update:** Actualizar nombre y descripción
+4. ✅ **Delete:** Eliminar categoría
+
+#### Productos (CRUD Completo)
+1. ✅ **Create:** Insertar nuevo producto con categoría
+2. ✅ **Read:** Leer producto por ID
+3. ✅ **Update:** Actualizar precio y stock
+4. ✅ **Delete:** Eliminar producto
+
+### Resultados de las Pruebas
+
+![Unit Test Results](file:///C:/Users/jhost/.gemini/antigravity/brain/030097c8-5f54-4da2-853f-2b1c37cde93b/unit_test_results_1764974620526.png)
+
+**Resumen:**
+- Total de pruebas: 8
+- Exitosas: 8
+- Fallidas: 0
+- Tasa de éxito: 100%
+
+### Evidencia en Video
+
+La ejecución completa de las pruebas fue grabada y está disponible en:
+```
+file:///C:/Users/jhost/.gemini/antigravity/brain/030097c8-5f54-4da2-853f-2b1c37cde93b/unit_tests_execution_1764974590015.webp
+```
+
+## 📖 Uso del Sistema
+
+### Para Clientes (Tienda Online)
+
+1. **Navegar productos:**
+   - Abre `http://localhost:8080/`
+   - Explora los productos disponibles
+   - Usa los filtros de categorías
+
+2. **Agregar al carrito:**
+   - Haz clic en "Agregar al Carrito"
+   - El carrito se abre automáticamente
+   - Ajusta cantidades con los botones +/-
+
+3. **Realizar pedido:**
+   - Haz clic en "Procesar Pedido"
+   - Completa el formulario (nombre, teléfono, dirección)
+   - Haz clic en "Confirmar y Enviar"
+   - Serás redirigido a WhatsApp con el detalle completo
+
+### Para Administradores (Panel Admin)
+
+1. **Acceder al panel:**
+   - Abre `http://localhost:8080/admin/`
+
+2. **Gestionar productos:**
+   - Haz clic en "Nuevo Producto"
+   - Completa el formulario
+   - Guarda los cambios
+   - Para editar: clic en el ícono de lápiz
+   - Para eliminar: clic en el ícono de basura
+
+3. **Gestionar categorías:**
+   - Haz clic en "Nueva Categoría"
+   - Ingresa nombre y descripción
+   - Guarda los cambios
+
+4. **Ver pedidos:**
+   - Revisa la tabla de pedidos
+   - Cambia el estado según corresponda
+   - Verifica los detalles de cada pedido
+
+## 🔧 Configuración Avanzada
+
+### Cambiar el Número de WhatsApp
+
+Edita `assets/js/app.js`:
 
 ```javascript
-fetch('/chatbot/api/', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken
-    },
-    body: JSON.stringify({
-        message: '¿Cuántos productos hay?'
-    })
-})
-.then(response => response.json())
-.then(data => console.log(data.response));
+const ADMIN_PHONE = '573143632877'; // Cambia este número
+```
+
+### Personalizar Alertas de Stock
+
+Edita `admin/index.php`:
+
+```php
+// Línea ~40
+$lowStockThreshold = 12; // Cambia el umbral de stock bajo
+```
+
+### Modificar Estilos
+
+Edita `assets/css/style.css`:
+
+```css
+:root {
+    --accent-color: #89CFF0; /* Color de acento (azul claro) */
+    --dark-bg: #0a0a0f;      /* Fondo oscuro */
+    --card-bg: rgba(20, 20, 25, 0.7); /* Fondo de tarjetas */
+}
 ```
 
 ## 🐛 Troubleshooting
 
-### Error: "No module named 'django'"
+### Error: "No se puede conectar a la base de datos"
 
-```bash
-# Asegúrate de estar en el entorno virtual
-venv\Scripts\activate  # Windows
-source venv/bin/activate  # macOS/Linux
+**Solución:**
+1. Verifica que MySQL esté corriendo
+2. Revisa las credenciales en `config/db.php`
+3. Asegúrate de que la base de datos `matias_store` exista
 
-# Reinstala las dependencias
-pip install -r requirements.txt
-```
+### Error: "SQLSTATE[23000]: Integrity constraint violation"
 
-### Error: "API Key not configured"
+**Solución:**
+Este error ocurre cuando intentas crear un pedido con productos que ya no existen.
 
-```bash
-# Verifica que tu .env tenga la clave correcta
-GEMINI_API_KEY=AIzaSy...
+1. Abre el carrito
+2. Elimina todos los productos
+3. Agrega productos nuevos desde la tienda
+4. Intenta de nuevo
 
-# Reinicia el servidor
-python manage.py runserver
-```
+### El carrito no guarda los productos
 
-### Error: "Table doesn't exist"
+**Solución:**
+1. Verifica que tu navegador permita `localStorage`
+2. Limpia la caché del navegador
+3. Recarga la página con Ctrl+F5
 
-```bash
-# Ejecuta las migraciones
-python manage.py migrate
-```
+### No puedo acceder desde el móvil
 
-### El menú lateral no se muestra
+**Solución:**
+1. Asegúrate de usar `php -S 0.0.0.0:8080`
+2. Verifica que ambos dispositivos estén en la misma red WiFi
+3. Desactiva temporalmente el firewall de Windows
+4. Usa la IP correcta (verifica con `ipconfig`)
 
-```bash
-# Limpia la caché del navegador
-# Presiona Ctrl+Shift+R (Windows/Linux) o Cmd+Shift+R (Mac)
-```
+### Las animaciones no funcionan
 
-### Error 403 en gestión de usuarios
+**Solución:**
+1. Verifica que tengas conexión a internet (CDNs)
+2. Limpia la caché del navegador
+3. Revisa la consola del navegador (F12) para errores
 
-Verifica que tu usuario tenga rol de administrador:
+## 📱 Acceso Móvil
 
-```python
-# En el shell de Django
-python manage.py shell
+### Configuración
 
-from apps.users.models import User
-user = User.objects.get(username='tuusuario')
-user.role = 'ADMIN'
-user.is_staff = True
-user.save()
-```
-
-## 📝 Comandos Útiles
-
-```bash
-# Crear superusuario
-python manage.py createsuperuser
-
-# Aplicar migraciones
-python manage.py migrate
-
-# Crear nuevas migraciones
-python manage.py makemigrations
-
-# Ejecutar shell de Django
-python manage.py shell
-
-# Recolectar archivos estáticos
-python manage.py collectstatic
-
-# Ejecutar tests
-python manage.py test
-
-# Crear backup de la base de datos
-python manage.py dumpdata > backup.json
-
-# Restaurar backup
-python manage.py loaddata backup.json
-```
-
-## 🚢 Despliegue en Producción
-
-### Preparación
-
-```bash
-# 1. Cambiar DEBUG a False en .env
-DEBUG=False
-
-# 2. Generar nueva SECRET_KEY
-python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
-
-# 3. Configurar ALLOWED_HOSTS en settings.py
-ALLOWED_HOSTS = ['tudominio.com', 'www.tudominio.com']
-
-# 4. Recolectar archivos estáticos
-python manage.py collectstatic
-```
-
-### Opciones de Hosting
-
-- **Heroku** - Fácil despliegue, free tier disponible
-- **PythonAnywhere** - Especializado en Django
-- **DigitalOcean** - Más control, requiere configuración
-- **AWS/Azure** - Escalable, profesional
-- **Render** - ⭐ Recomendado, fácil y gratis
-
-### Despliegue en Render (Recomendado)
-
-Este proyecto está optimizado para desplegarse en [Render.com](https://render.com) con PostgreSQL.
-
-**📖 Guía completa de despliegue**: Ver [DEPLOY.md](DEPLOY.md)
-
-**Resumen rápido:**
-
-1. El proyecto ya incluye los archivos necesarios:
-   - `build.sh` - Script de construcción
-   - `requirements.txt` - Con dependencias de producción (gunicorn, psycopg2, whitenoise)
-   - `settings.py` - Configurado para PostgreSQL con `dj-database-url`
-
-2. Crea una base de datos PostgreSQL en Render
-
-3. Crea un Web Service conectado a tu repositorio GitHub
-
-4. Configura las variables de entorno:
-   ```
-   DATABASE_URL=postgresql://...
-   SECRET_KEY=tu-clave-secreta
-   DEBUG=False
-   PYTHON_VERSION=3.11.9
+1. Inicia el servidor con:
+   ```bash
+   php -S 0.0.0.0:8080
    ```
 
-5. ¡Listo! Render desplegará automáticamente tu aplicación
+2. Encuentra tu IP local:
+   ```bash
+   ipconfig | findstr "IPv4"
+   ```
 
-**🔗 Demo en vivo**: [https://sistema-de-inventarios.onrender.com](https://sistema-de-inventarios-h50e.onrender.com) *(actualiza con tu URL)*
+3. En tu móvil, abre el navegador y accede a:
+   ```
+   http://TU_IP_LOCAL:8080
+   ```
 
+### URLs Móviles
 
-## 📄 Licencia
+- **Tienda:** `http://192.168.1.2:8080/`
+- **Admin:** `http://192.168.1.2:8080/admin/`
 
-Este proyecto está bajo la Licencia MIT. Ver archivo `LICENSE` para más detalles.
+*(Reemplaza `192.168.1.2` con tu IP local)*
 
-## 👨‍💻 Autor
+## 🎨 Diseño y UX
 
-**Jhostin Joel**
-- GitHub: [@JhostinJoel](https://github.com/JhostinJoel)
-- Proyecto: [Sistema-de-Inventarios](https://github.com/JhostinJoel/Sistema-de-Inventarios)
+### Paleta de Colores
+
+- **Fondo oscuro:** `#0a0a0f`
+- **Acento (azul claro):** `#89CFF0`
+- **Tarjetas:** `rgba(20, 20, 25, 0.7)`
+- **Texto:** `#e0e0e0`
+
+### Efectos Visuales
+
+- **Glassmorphism:** Fondo translúcido con `backdrop-filter: blur()`
+- **Gradientes:** Texto con degradado de blanco a azul claro
+- **Sombras:** Glow effect con `box-shadow` y color de acento
+- **3D Tilt:** Efecto de inclinación en tarjetas de productos
+- **Animaciones:** Fade in, zoom, bounce (Animate.css)
+
+### Responsividad
+
+El sistema es completamente responsive con breakpoints en:
+- **992px:** Tablets
+- **768px:** Móviles grandes
+- **576px:** Móviles pequeños
+
+## 📊 Base de Datos
+
+### Esquema
+
+#### Tabla: `categories`
+```sql
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### Tabla: `products`
+```sql
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    category_id INT,
+    image VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+);
+```
+
+#### Tabla: `orders`
+```sql
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(200) NOT NULL,
+    customer_phone VARCHAR(20) NOT NULL,
+    customer_address TEXT NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    status ENUM('pendiente', 'completado', 'cancelado') DEFAULT 'pendiente',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### Tabla: `order_details`
+```sql
+CREATE TABLE order_details (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE RESTRICT
+);
+```
 
 ## 🤝 Contribuciones
 
-Las contribuciones son bienvenidas! Por favor:
+Las contribuciones son bienvenidas. Por favor:
 
-1. Fork el proyecto
+1. Haz fork del proyecto
 2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
 3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
-## 📞 Soporte
+## 📄 Licencia
 
-Si encuentras algún problema o tienes preguntas:
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
-1. Revisa la sección [Troubleshooting](#troubleshooting)
-2. Busca en los [Issues](https://github.com/JhostinJoel/Sistema-de-Inventarios/issues)
-3. Crea un nuevo Issue si es necesario
+## 👨‍💻 Autor
+
+**Jhostin Joel**
+- GitHub: [@JhostinJoel](https://github.com/JhostinJoel)
+- LinkedIn: [Jhostin Joel](https://linkedin.com/in/jhostinjoel)
+
+## 🙏 Agradecimientos
+
+- Bootstrap por el framework CSS
+- Font Awesome por los iconos
+- SweetAlert2 por las alertas modernas
+- Vanilla Tilt.js por los efectos 3D
+- Animate.css por las animaciones
 
 ---
 

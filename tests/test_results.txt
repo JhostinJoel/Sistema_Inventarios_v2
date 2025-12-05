@@ -1,0 +1,9 @@
+Resultados de Pruebas Unitarias (Web Runner)
+Fecha: 2025-12-05
+---------------------------------------------------
+
+Ejecutando: Conexión a Base de Datos... ✅ PASÓ
+Ejecutando: Crear Producto de Prueba... ✅ PASÓ
+Ejecutando: Crear Pedido... ✅ PASÓ
+
+Resumen: Todas las pruebas críticas pasaron.
