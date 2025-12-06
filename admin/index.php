@@ -18,6 +18,20 @@ if (isset($_GET['delete_category'])) {
     exit;
 }
 
+// Actualizar estado del pedido
+if (isset($_GET['update_order_status']) && isset($_GET['status'])) {
+    $orderId = $_GET['update_order_status'];
+    $newStatus = $_GET['status'];
+    $validStatuses = ['pendiente', 'confirmado', 'enviado', 'entregado', 'cancelado'];
+
+    if (in_array($newStatus, $validStatuses)) {
+        $stmt = $pdo->prepare("UPDATE orders SET status = ? WHERE id = ?");
+        $stmt->execute([$newStatus, $orderId]);
+        header("Location: index.php?tab=orders&msg=status_updated");
+        exit;
+    }
+}
+
 // Procesar Formularios POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
@@ -119,55 +133,92 @@ foreach ($products as $p) {
 
     <style>
         /* Admin Specific Overrides */
-        
+
         /* IMPROVED Light Theme for Admin */
         [data-theme="light"] body {
-            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            background: linear-gradient(135deg, #a0c4ff 0%, #c2e0ff 100%);
             color: #2d3748;
+        }
+
+        [data-theme="light"] .glass-nav {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
+
+        [data-theme="light"] .navbar-brand {
+            color: #2d3748 !important;
         }
 
         [data-theme="light"] .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            color: #2d3748;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.98) !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            color: #2d3748 !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
         [data-theme="light"] .glass-card:hover {
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 1) !important;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Fondo azul claro para las tarjetas de estadísticas en tema claro */
+        body[data-theme="light"] .stat-card.glass-card,
+        [data-theme="light"] .stat-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%) !important;
+            border: 1px solid rgba(33, 150, 243, 0.3) !important;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.15) !important;
+        }
+
+        body[data-theme="light"] .stat-card.glass-card:hover,
+        [data-theme="light"] .stat-card:hover {
+            background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%) !important;
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.25) !important;
+        }
+
+
+        [data-theme="light"] .glass-card h2,
+        [data-theme="light"] .glass-card h6,
+        [data-theme="light"] .glass-card span,
+        [data-theme="light"] .glass-card .fw-bold {
+            color: #2d3748 !important;
+        }
+
+        [data-theme="light"] .text-white-50 {
+            color: #718096 !important;
         }
 
         [data-theme="light"] .table-glass {
-            color: #2d3748;
+            color: #2d3748 !important;
         }
 
         [data-theme="light"] .table-glass th,
         [data-theme="light"] .table-glass td {
-            border-color: rgba(0, 0, 0, 0.08);
-            color: #2d3748;
+            border-color: rgba(0, 0, 0, 0.1) !important;
+            color: #2d3748 !important;
         }
 
         [data-theme="light"] h1,
         [data-theme="light"] h2,
         [data-theme="light"] h3,
         [data-theme="light"] h4,
-        [data-theme="light"] h5 {
+        [data-theme="light"] h5,
+        [data-theme="light"] h6 {
             color: #1a202c !important;
         }
 
         [data-theme="light"] .nav-pills .nav-link {
-            color: #4a5568;
+            color: #4a5568 !important;
+            background: rgba(0, 0, 0, 0.05);
         }
 
         [data-theme="light"] .nav-pills .nav-link.active {
-            background: linear-gradient(45deg, #11998e, #38ef7d);
-            color: white;
+            background: linear-gradient(45deg, #11998e, #38ef7d) !important;
+            color: white !important;
         }
 
         [data-theme="light"] .nav-pills .nav-link:hover:not(.active) {
-            background: rgba(0, 0, 0, 0.05);
-            color: #2d3748;
+            background: rgba(0, 0, 0, 0.1);
+            color: #2d3748 !important;
         }
 
         [data-theme="light"] .text-white {
@@ -186,37 +237,117 @@ foreach ($products as $p) {
             color: #fff !important;
         }
 
+        [data-theme="light"] .modal-content {
+            background: #fff !important;
+            color: #2d3748 !important;
+        }
+
+        [data-theme="light"] .modal-header,
+        [data-theme="light"] .modal-footer {
+            border-color: rgba(0, 0, 0, 0.1) !important;
+        }
+
+        [data-theme="light"] .form-control,
+        [data-theme="light"] .form-select {
+            background: #fff !important;
+            border: 1px solid rgba(0, 0, 0, 0.2) !important;
+            color: #2d3748 !important;
+        }
+
         /* Ensure buttons stay colorful */
         [data-theme="light"] .btn-success {
             background: #48bb78;
             border-color: #48bb78;
-            color: white;
+            color: white !important;
         }
 
         [data-theme="light"] .btn-danger {
             background: #f56565;
             border-color: #f56565;
-            color: white;
+            color: white !important;
         }
 
         [data-theme="light"] .btn-primary {
             background: #4299e1;
             border-color: #4299e1;
-            color: white;
+            color: white !important;
+        }
+
+
+        /* Dropdown menu in light theme */
+        [data-theme="light"] .dropdown-menu-dark {
+            background: #fff !important;
+            border: 1px solid rgba(0, 0, 0, 0.15) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="light"] .dropdown-menu-dark .dropdown-item {
+            color: #2d3748 !important;
+        }
+
+        [data-theme="light"] .dropdown-menu-dark .dropdown-item:hover {
+            background: rgba(0, 0, 0, 0.05) !important;
+            color: #1a202c !important;
+        }
+
+        [data-theme="light"] .dropdown-menu-dark .dropdown-item.active {
+            background: linear-gradient(45deg, #11998e, #38ef7d) !important;
+            color: white !important;
+        }
+
+        [data-theme="light"] .dropdown-menu-dark .dropdown-divider {
+            border-color: rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* Outline buttons in light theme */
+        [data-theme="light"] .btn-outline-light {
+            border-color: #4a5568 !important;
+            color: #4a5568 !important;
+        }
+
+        [data-theme="light"] .btn-outline-light:hover {
+            background: #4a5568 !important;
+            color: white !important;
         }
 
         [data-theme="light"] .btn-info {
             background: #0bc5ea;
             border-color: #0bc5ea;
-            color: white;
+            color: white !important;
         }
 
         /* Theme Toggle in Admin */
         .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
+            background: transparent;
+            border: 2px solid #ffc107;
+            color: #ffc107;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle:hover {
+            background: #ffc107;
+            color: #212529;
+            transform: rotate(180deg);
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.5);
+        }
+
+        [data-theme="light"] .theme-toggle {
+            border-color: #4299e1;
+            color: #4299e1;
+        }
+
+        [data-theme="light"] .theme-toggle:hover {
+            background: #4299e1;
+            color: white;
+            box-shadow: 0 0 20px rgba(66, 153, 225, 0.5);
         }
 
         body {
@@ -298,9 +429,13 @@ foreach ($products as $p) {
             <a class="navbar-brand text-white fw-bold" href="#">
                 <i class="fas fa-user-shield me-2 text-warning"></i>ADMIN PANEL
             </a>
-            <div class="d-flex">
-                <a href="../index.php" target="_blank" class="btn btn-outline-light rounded-pill btn-sm">
-                    <i class="fas fa-external-link-alt me-2"></i>Ver Tienda
+            <div class="d-flex align-items-center gap-3">
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Cambiar tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="../index.php" target="_blank" class="btn btn-warning rounded-pill px-4 py-2 d-flex align-items-center gap-2 fw-bold" style="font-size: 1.1rem;">
+                    <i class="fas fa-store fa-lg"></i>
+                    <span>MATIA'S STORE</span>
                 </a>
             </div>
         </div>
@@ -330,9 +465,9 @@ foreach ($products as $p) {
         <?php endif; ?>
 
         <!-- Stats Row -->
-        <div class="row g-4 mb-5">
+        <div class="row g-4 mb-5 stats-row">
             <div class="col-md-4">
-                <div class="glass-card d-flex align-items-center justify-content-between">
+                <div class="glass-card stat-card d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-white-50">Total Productos</h6>
                         <h2 class="fw-bold mb-0"><?php echo $totalProducts; ?></h2>
@@ -341,7 +476,7 @@ foreach ($products as $p) {
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="glass-card d-flex align-items-center justify-content-between">
+                <div class="glass-card stat-card d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-white-50">Ventas Totales</h6>
                         <h2 class="fw-bold mb-0">$<?php echo number_format($totalSales, 2); ?></h2>
@@ -350,7 +485,7 @@ foreach ($products as $p) {
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="glass-card d-flex align-items-center justify-content-between">
+                <div class="glass-card stat-card d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-white-50">Pedidos</h6>
                         <h2 class="fw-bold mb-0"><?php echo $totalOrders; ?></h2>
@@ -478,10 +613,22 @@ foreach ($products as $p) {
                                     <th>Total</th>
                                     <th>Fecha</th>
                                     <th>Estado</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($orders as $o): ?>
+                                    <?php
+                                    // Determinar el color del badge según el estado
+                                    $statusColors = [
+                                        'pendiente' => 'bg-warning text-dark',
+                                        'confirmado' => 'bg-info text-dark',
+                                        'enviado' => 'bg-primary',
+                                        'entregado' => 'bg-success',
+                                        'cancelado' => 'bg-danger'
+                                    ];
+                                    $badgeClass = $statusColors[$o['status']] ?? 'bg-secondary';
+                                    ?>
                                     <tr>
                                         <td>#<?php echo $o['id']; ?></td>
                                         <td>
@@ -491,7 +638,27 @@ foreach ($products as $p) {
                                         <td><?php echo htmlspecialchars($o['customer_phone']); ?></td>
                                         <td class="text-warning fw-bold">$<?php echo number_format($o['total_amount'], 2); ?></td>
                                         <td><?php echo date('d/m/Y', strtotime($o['created_at'])); ?></td>
-                                        <td><span class="badge bg-info text-dark"><?php echo strtoupper($o['status']); ?></span></td>
+                                        <td><span class="badge <?php echo $badgeClass; ?>"><?php echo strtoupper($o['status']); ?></span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fas fa-edit me-1"></i>Estado
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-dark">
+                                                    <li><a class="dropdown-item <?php echo $o['status'] === 'pendiente' ? 'active' : ''; ?>" href="#" onclick="changeOrderStatus(<?php echo $o['id']; ?>, 'pendiente')"><i class="fas fa-clock text-warning me-2"></i>Pendiente</a></li>
+                                                    <li><a class="dropdown-item <?php echo $o['status'] === 'confirmado' ? 'active' : ''; ?>" href="#" onclick="changeOrderStatus(<?php echo $o['id']; ?>, 'confirmado')"><i class="fas fa-check text-info me-2"></i>Confirmado</a></li>
+                                                    <li><a class="dropdown-item <?php echo $o['status'] === 'enviado' ? 'active' : ''; ?>" href="#" onclick="changeOrderStatus(<?php echo $o['id']; ?>, 'enviado')"><i class="fas fa-truck text-primary me-2"></i>Enviado</a></li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li><a class="dropdown-item <?php echo $o['status'] === 'entregado' ? 'active' : ''; ?>" href="#" onclick="changeOrderStatus(<?php echo $o['id']; ?>, 'entregado')"><i class="fas fa-check-double text-success me-2"></i>Entregado</a></li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li><a class="dropdown-item <?php echo $o['status'] === 'cancelado' ? 'active' : ''; ?>" href="#" onclick="changeOrderStatus(<?php echo $o['id']; ?>, 'cancelado')"><i class="fas fa-times text-danger me-2"></i>Cancelado</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -822,6 +989,13 @@ foreach ($products as $p) {
                     background: '#1e1e1e',
                     color: '#fff'
                 });
+                if (msg === 'status_updated') Swal.fire({
+                    icon: 'success',
+                    title: '¡Estado Actualizado!',
+                    text: 'El estado del pedido ha sido actualizado correctamente.',
+                    background: '#1e1e1e',
+                    color: '#fff'
+                });
 
                 // Clean URL to prevent alert on reload
                 const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + (tab ? '?tab=' + tab : '');
@@ -869,6 +1043,41 @@ foreach ($products as $p) {
                 }
             })
         }
+
+        function changeOrderStatus(orderId, newStatus) {
+            const statusLabels = {
+                'pendiente': 'Pendiente',
+                'confirmado': 'Confirmado',
+                'enviado': 'Enviado',
+                'entregado': 'Entregado',
+                'cancelado': 'Cancelado'
+            };
+
+            const statusIcons = {
+                'pendiente': 'warning',
+                'confirmado': 'info',
+                'enviado': 'question',
+                'entregado': 'success',
+                'cancelado': 'error'
+            };
+
+            Swal.fire({
+                title: '¿Cambiar estado del pedido?',
+                html: `El pedido <strong>#${orderId}</strong> será marcado como <strong>${statusLabels[newStatus]}</strong>`,
+                icon: statusIcons[newStatus],
+                showCancelButton: true,
+                confirmButtonColor: newStatus === 'entregado' ? '#28a745' : (newStatus === 'cancelado' ? '#d33' : '#3085d6'),
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, cambiar estado',
+                cancelButtonText: 'Cancelar',
+                background: '#1e1e1e',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `index.php?update_order_status=${orderId}&status=${newStatus}`;
+                }
+            })
+        }
     </script>
 
     <script>
@@ -877,15 +1086,32 @@ foreach ($products as $p) {
             const savedTheme = localStorage.getItem('matias_theme') || 'dark';
             document.body.setAttribute('data-theme', savedTheme);
             updateThemeIcon(savedTheme);
+        updateStatCards(savedTheme);
         }
 
         function toggleTheme() {
             const currentTheme = document.body.getAttribute('data-theme') || 'dark';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
+
             document.body.setAttribute('data-theme', newTheme);
             localStorage.setItem('matias_theme', newTheme);
             updateThemeIcon(newTheme);
+        updateStatCards(newTheme);
+        }
+
+        function updateStatCards(theme) {
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                if (theme === 'light') {
+                    card.style.background = 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)';
+                    card.style.border = '1px solid rgba(33, 150, 243, 0.3)';
+                    card.style.boxShadow = '0 4px 15px rgba(33, 150, 243, 0.15)';
+                } else {
+                    card.style.background = '';
+                    card.style.border = '';
+                    card.style.boxShadow = '';
+                }
+            });
         }
 
         function updateThemeIcon(theme) {

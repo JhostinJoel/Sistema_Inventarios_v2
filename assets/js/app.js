@@ -15,6 +15,22 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeTheme();
 });
 
+// Show Product Description Modal
+function showDescription(productName, description) {
+    const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+    const isDark = currentTheme === 'dark';
+
+    Swal.fire({
+        title: productName,
+        html: `<p style="text-align: left; line-height: 1.6;">${description}</p>`,
+        icon: 'info',
+        confirmButtonText: 'Cerrar',
+        confirmButtonColor: '#0066cc',
+        background: isDark ? '#1e1e1e' : '#fff',
+        color: isDark ? '#fff' : '#2d3748'
+    });
+}
+
 // Theme Management
 function initializeTheme() {
     const savedTheme = localStorage.getItem('matias_theme') || 'dark';

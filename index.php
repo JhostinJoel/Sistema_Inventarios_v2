@@ -104,23 +104,40 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php if (count($products) > 0): ?>
                     <?php foreach ($products as $product): ?>
                         <div class="col-md-4 col-lg-3 product-item" data-category="<?php echo $product['category_id']; ?>">
-                            <!-- Added data-tilt for 3D effect -->
-                            <div class="card product-card h-100 border-0 shadow-lg" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.5">
+                            <div class="card product-card h-100 border-0 shadow-lg" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.3">
                                 <div class="product-img-wrapper">
                                     <img src="<?php echo htmlspecialchars($product['image'] ?: 'https://via.placeholder.com/300x300?text=No+Image'); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>">
                                     <div class="overlay d-flex justify-content-center align-items-center gap-2">
-                                        <button class="btn btn-light rounded-circle shadow p-3" onclick="addToCart(<?php echo htmlspecialchars(json_encode($product)); ?>)">
+                                        <button class="btn btn-light rounded-circle shadow p-3" onclick="addToCart(<?php echo htmlspecialchars(json_encode($product)); ?>)" title="Agregar al carrito">
                                             <i class="fas fa-cart-plus text-primary fa-lg"></i>
+                                        </button>
+                                        <button class="btn btn-light rounded-circle shadow p-3" onclick="showDescription('<?php echo htmlspecialchars(addslashes($product['name'])); ?>', '<?php echo htmlspecialchars(addslashes($product['description'] ?: 'Sin descripción disponible')); ?>')" title="Ver detalles">
+                                            <i class="fas fa-eye text-info fa-lg"></i>
                                         </button>
                                     </div>
                                     <span class="badge bg-primary position-absolute top-0 end-0 m-3 py-2 px-3 rounded-pill shadow"><?php echo htmlspecialchars($product['category_name'] ?? 'General'); ?></span>
+                                    <?php 
+                                    $stockClass = $product['stock'] > 12 ? 'in-stock' : ($product['stock'] > 0 ? 'low-stock' : 'out-of-stock');
+                                    $stockText = $product['stock'] > 12 ? 'En Stock' : ($product['stock'] > 0 ? 'Pocas unidades' : 'Agotado');
+                                    ?>
+                                    <span class="stock-badge position-absolute top-0 start-0 m-3 <?php echo $stockClass; ?>">
+                                        <i class="fas fa-<?php echo $product['stock'] > 0 ? 'check-circle' : 'times-circle'; ?> me-1"></i><?php echo $stockText; ?>
+                                    </span>
                                 </div>
-                                <div class="card-body text-center text-white">
-                                    <h5 class="card-title fw-bold mb-1"><?php echo htmlspecialchars($product['name']); ?></h5>
-                                    <p class="card-text text-white-50 small mb-3"><?php echo substr(htmlspecialchars($product['description']), 0, 50) . '...'; ?></p>
-                                    <h4 class="price-tag mb-3">$<?php echo number_format($product['price'], 2); ?></h4>
-                                    <button class="btn btn-primary w-100 rounded-pill btn-buy py-2 fw-bold" onclick="addToCart(<?php echo htmlspecialchars(json_encode($product)); ?>)">
-                                        Agregar al Carrito
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title mb-0 flex-grow-1"><?php echo htmlspecialchars($product['name']); ?></h5>
+                                        <button class="btn-view-desc" onclick="showDescription('<?php echo htmlspecialchars(addslashes($product['name'])); ?>', '<?php echo htmlspecialchars(addslashes($product['description'] ?: 'Sin descripción disponible')); ?>')" title="Ver descripción completa">
+                                            <i class="fas fa-info"></i>
+                                        </button>
+                                    </div>
+                                    <p class="card-description mb-2"><?php echo htmlspecialchars(substr($product['description'] ?: 'Producto de alta calidad', 0, 60)); ?><?php echo strlen($product['description'] ?? '') > 60 ? '...' : ''; ?></p>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h4 class="price-tag mb-0">$<?php echo number_format($product['price'], 2); ?></h4>
+                                        <small class="text-muted"><?php echo $product['stock']; ?> disponibles</small>
+                                    </div>
+                                    <button class="btn btn-primary w-100 rounded-pill btn-buy py-2 fw-bold" onclick="addToCart(<?php echo htmlspecialchars(json_encode($product)); ?>)" <?php echo $product['stock'] <= 0 ? 'disabled' : ''; ?>>
+                                        <i class="fas fa-shopping-cart me-2"></i><?php echo $product['stock'] > 0 ? 'Agregar al Carrito' : 'Sin Stock'; ?>
                                     </button>
                                 </div>
                             </div>

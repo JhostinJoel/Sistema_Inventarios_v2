@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS orders (
     customer_phone VARCHAR(50) NOT NULL,
     customer_address TEXT,
     total_amount DECIMAL(10, 2) NOT NULL,
-    status ENUM('pendiente', 'confirmado', 'enviado', 'cancelado') DEFAULT 'pendiente',
+    status ENUM('pendiente', 'confirmado', 'enviado', 'entregado', 'cancelado') DEFAULT 'pendiente',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
