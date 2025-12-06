@@ -1,6 +1,8 @@
 # 🏪 Matia's Store - Sistema de Inventario y Tienda Online
 
-Sistema completo de gestión de inventario con tienda online, panel de administración y procesamiento de pedidos vía WhatsApp, desarrollado en PHP puro con MySQL.
+**Matia's Store** es una solución integral de comercio electrónico y gestión de inventarios diseñada para potenciar pequeños y medianos negocios. 
+
+Este sistema actúa como un puente entre la gestión física y digital, permitiendo a los administradores **controlar el inventario en tiempo real**, gestionar **ventas y pedidos**, y ofrecer a los clientes una experiencia de compra moderna y fluida. Es la herramienta ideal para negocios que buscan digitalizar sus operaciones sin complicaciones, centralizando la administración de productos, categorías y flujo de caja en una sola plataforma robusta y segura.
 
 ![PHP](https://img.shields.io/badge/PHP-8.0+-blue)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0+-orange)
