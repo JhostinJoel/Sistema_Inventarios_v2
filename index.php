@@ -174,7 +174,10 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <span class="h5 mb-0">Total:</span>
                     <span class="h4 fw-bold text-warning mb-0" id="cartTotal">$0.00</span>
                 </div>
-                <button class="btn btn-success w-100 rounded-pill py-3 fw-bold shadow-lg hover-scale" onclick="openCheckoutModal()">
+                                <button class="btn btn-outline-light w-100 rounded-pill py-2 mb-2 fw-bold hover-scale" data-bs-dismiss="offcanvas">
+                    <i class="fas fa-arrow-left me-2"></i>Seguir Comprando
+                </button>
+<button class="btn btn-success w-100 rounded-pill py-3 fw-bold shadow-lg hover-scale" onclick="openCheckoutModal()">
                     <i class="fab fa-whatsapp me-2"></i>Procesar Pedido
                 </button>
             </div>

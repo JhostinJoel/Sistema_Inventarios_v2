@@ -581,3 +581,26 @@ body {
     color: #1a202c !important;
     text-shadow: none;
 }
+
+/* Cart Offcanvas - Light Theme Visibility */
+[data-theme="light"] .glass-offcanvas .text-white,
+[data-theme="light"] .glass-offcanvas .text-white-50,
+[data-theme="light"] .glass-offcanvas .h5,
+[data-theme="light"] .glass-offcanvas .offcanvas-title {
+    color: #2d3748 !important;
+}
+
+[data-theme="light"] .glass-offcanvas .border-secondary {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .glass-offcanvas .btn-outline-light {
+    color: #2d3748;
+    border-color: #2d3748;
+}
+
+[data-theme="light"] .glass-offcanvas .btn-outline-light:hover {
+    background-color: #2d3748;
+    color: #fff;
+}
+
